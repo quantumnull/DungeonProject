@@ -1,0 +1,8 @@
+proximity detection is now properly circular
+
+added terrible vision function
+
+made incredibly hacky getdirection function
+
+
+added a single unit test for circular los

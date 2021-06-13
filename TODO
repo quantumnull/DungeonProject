@@ -1,0 +1,32 @@
+Version Control:
+Add version control by linking a github repo
+
+Input:
+Handle input better / more elegantly, there's a MUD called Evennia we could maybe steal from, but in general there are a lot of interesting text handling approaches out there
+
+Movement:
+Allow movement by greater/less distances
+
+Time:
+Allow updates of time, updates of time of different lengths i.e. prompt the player when they arrive at their destination or when something interesting happens (goblin!) etc
+
+Combat:
+entities have intents, try to enact them, prompt responses, varying time step by perception / ooda loop time of actor, which should scale with skill -- OODA is Observe, Orient, Decide, Act
+
+Character:
+Skills and attributes?
+
+World:
+Nested abstract structures, with different rules for internal coords
+
+Vision:
+describing the surroundings naturally based on player skills and positioning
+
+Magic:
+Someday, maybe?
+
+LONG TERM:
+Refactor / throw out and start over this entire thing with support for actual multiplayer, which will mean learning a server framework of some kind probably (because coding our own server from scratch doesn't sound particularly fun)
+
+Nonlinear time? Bonus time for players who have not connecyted in a while?
+
