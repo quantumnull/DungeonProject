@@ -1,3 +1,11 @@
+import random
+
+def ive(index=None):
+  if index == None:
+    return random.choice(ives)
+  else:
+    return ives[index]
+
 ives = [
   "abandoned",
   "abdominal",
@@ -4845,11 +4853,3 @@ ives = [
   "space-distorting",
   "northkern",
 ]
-
-import random
-
-def ive(index=-1):
-  if index == -1:
-    return random.choice(ives)
-  else:
-    return ives[index]
