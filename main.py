@@ -1,17 +1,18 @@
 import act
 import player
 import world
+import locations
 
 try:
   if __name__ == "__main__":
     print("Oh great, another one.")
-    player.pc = player.Player(
-      "y" == input("Dost this hero have any personality at all? ")
-    )
+    has_personality = input("Dost this hero have any personality at all? ")
+    player.pc = player.Player("y" == has_personality)
 
     while True:
       print("You are at", player.pc.coords)
-      world.print_visible()
+      world.print_visible(player.pc.coords)
+      print("You have found", len(player.pc.fairies), "fairies")
       words = input("What do? ").split()
       if len(words) == 0:
         continue

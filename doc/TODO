@@ -30,3 +30,5 @@ Refactor / throw out and start over this entire thing with support for actual mu
 
 Nonlinear time? Bonus time for players who have not connecyted in a while?
 
+Add a class to represent the gameworld as a whole
+

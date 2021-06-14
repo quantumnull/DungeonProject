@@ -25,6 +25,7 @@ class Player:
       self.print_stats()
     
     self.coords = (0.0, 0.0)
+    self.fairies = set()
 
   def print_stats(self):
     print("Your name is", self.name)
