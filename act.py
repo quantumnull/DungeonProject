@@ -1,6 +1,6 @@
 import player
 import world
-from individual import Individual
+from entity import Individual
 
 def go(words):
   if len(words) == 0:
@@ -13,7 +13,10 @@ def go(words):
       return
   elif len(words) == 3 and words[0] == "to":
     if words[2] in world.pops and words[1] in world.pops[words[2]]:
-      player.pc.teleport(world.pops[words[2]][words[1]].coords)
+      vector=player.get_offset(player.pc.coords,world.pops[words[2]][words[1]].coords)
+      player.pc.walk(vector)
+#      player.pc.teleport(world.pops[words[2]][words[1]].coords)
+
       return
 
   print("You cannot go", " ".join(words))
@@ -24,7 +27,6 @@ def evil(words):
   except BaseException as e:
     print("You have done a sin.")
     print(e)
-    pass
 
 ions = {
   "go": go,
@@ -67,6 +69,7 @@ def direction_vector(dir, steps: int = 10) -> None:
   
   return None
 
+# will ultimately
 def move_individual(
   individual: Individual, 
   direction: tuple([float, float]), 
@@ -76,7 +79,5 @@ def move_individual(
   loc_x, loc_y = individual.coords
   dir_x, dir_y = direction
   steps = steps
-
-  
 
   return None

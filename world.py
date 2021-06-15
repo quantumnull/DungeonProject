@@ -1,9 +1,15 @@
 from population import Population
 import player
+import language
+import entity_types
 
+# run through population __init__ method and generate entities
+# arguments = (entity type, number to generate, max distance from origin)
 pops = {
-  "fairy": Population("fairy", 20.0, 200, 1000),
-  "goblin": Population("goblin", 40.0, 100, 1000),
+  "fairy": Population(entity_types.fairy, 200, 1000),
+  "goblin": Population(entity_types.goblin, 200, 1000),
+  "fire": Population(entity_types.fire, 200, 1000),
+  "elephant": Population(entity_types.elephant, 100, 1000),
 }
 
 def print_visible(from_coords):
@@ -16,6 +22,9 @@ def print_visible(from_coords):
       player.pc.fairies.add(ind.name)
 
     if dist < ind.size / 2:
-      print("You see a", ind.name, ind.noun, ind.get_direction(from_coords))
+      print("You see", language.article(ind.name), ind.name, ind.noun, ind.get_direction(from_coords))
     else:
-      print("You faintly see something", ind.get_direction(from_coords))
+      print(ind.farstring, ind.get_direction(from_coords))
+
+#class World():
+  

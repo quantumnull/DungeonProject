@@ -1,19 +1,22 @@
-import adject
-from individual import Individual
+import entity_types
+from entity import Entity
+
 
 import random
 from math import sqrt
 
+# generate entities using the entity spawn method
+# which creates clones of creatures in entity_types
+# I'm not sure how I feel about the population __init__ doing all the heavy lifting,
+# might be worth breaking it into a separate def at some point?
 class Population:
-  def __init__(self, noun, size, num, boundary):
-    self.noun = noun
+  def __init__(self, entity, num, boundary):
     self.individuals = {}
     for i in range(num):
       x = random.uniform(-boundary, boundary)
       y = random.uniform(-boundary, boundary)
-      name = adject.ive()
-      self.individuals[name] = Individual(name, noun, size, (x, y))
-    self.individuals["tutorial"] = Individual("tutorial", noun, size, (0.0, 0.0))
+      new_entity = entity.spawn((x, y))
+      self.individuals[new_entity.name] = new_entity
   
   def __getitem__(self, key):
     return self.individuals[key]

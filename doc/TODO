@@ -1,8 +1,13 @@
+player should prob be a kind of entity, because we're getting duplicated functions and are going to have more and more, also describing the player when you can see them is a) funny and b) leans multiplayer
+
 Version Control:
 Add version control by linking a github repo
 
 Input:
-Handle input better / more elegantly, there's a MUD called Evennia we could maybe steal from, but in general there are a lot of interesting text handling approaches out there
+Handle input better / more elegantly, there's a MUD called Evennia we could maybe steal from, but in general there are a lot of interesting text handling approaches out there. Probably try to handle input in one way, in one place
+
+Output:
+Probably instead of having everything print it's own bit we should be aggregating output during each update step so we can make it look nicer ("You take a step north x10"), or "there are goblins to the north, northeast, and south of you; they are troubling, squamous and grass-fed organic respectively." etc.)
 
 Movement:
 Allow movement by greater/less distances
@@ -31,4 +36,6 @@ Refactor / throw out and start over this entire thing with support for actual mu
 Nonlinear time? Bonus time for players who have not connecyted in a while?
 
 Add a class to represent the gameworld as a whole
+
+Add a way to kill individuals and remove them from their respective populations, or maybe change their population group to corpse, or have an is_corpse tag or something
 

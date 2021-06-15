@@ -43,3 +43,6 @@ class Player:
     new_x = self.coords[0] + vector[0]
     new_y = self.coords[1] + vector[1]
     self.coords = (new_x, new_y)
+  #zach snuck this untested function in here, and in entity
+  def get_offset(origin, dest):
+    return tuple(item1 + item2 for item1, item2 in zip(origin, dest))
