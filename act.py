@@ -1,10 +1,11 @@
 import player
 import world
+from graphics import read, write
 from entity import Individual
 
 def go(words):
   if len(words) == 0:
-    words = input("Go where? ").split()
+    words = read("Go where? ").split()
   
   if len(words) == 1:
     vector = direction_vector(words[0])
@@ -19,14 +20,14 @@ def go(words):
 
       return
 
-  print("You cannot go", " ".join(words))
+  write(f"You cannot go {' '.join(words)}")
 
 def evil(words):
   try:
-    print(eval(" ".join(words)))
+    write(str(eval(" ".join(words))))
   except BaseException as e:
-    print("You have done a sin.")
-    print(e)
+    write("You have done a sin.")
+    write(str(e))
 
 ions = {
   "go": go,
@@ -64,7 +65,7 @@ def direction_vector(dir, steps: int = 10) -> None:
   if dir == "southwest":
     return (-steps, -steps)
   if dir == "est" or dir == "northk":
-    print("The floor is made of meat.")
+    write("The floor is made of meat.")
     return (0, 0)
   
   return None

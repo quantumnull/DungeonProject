@@ -1,20 +1,21 @@
 import adject
+from graphics import read, write
 
 pc = None
 
 class Player:
   def __init__(self, unmirthless):
     if unmirthless:
-      self.name = input("What is your name? ")
-      self.vocation = input("What is your vocation? ")
-      self.color = input("What is your favorite color? ")
-      self.velocity = input("How much airspeed velocity could an unladen swallow swallow if an unladen swallow could swallow speed? ")
-      self.love = input("What is love? ")
-      self.licks = input("How many licks to the center of a footsie pop? ")
-      self.conan = input("Conan, what is best in life? ")
+      self.name = read("What is your name? ")
+      self.vocation = read("What is your vocation? ")
+      self.color = read("What is your favorite color? ")
+      self.velocity = read("How much airspeed velocity could an unladen swallow swallow if an unladen swallow could swallow speed? ")
+      self.love = read("What is love? ")
+      self.licks = read("How many licks to the center of a footsie pop? ")
+      self.conan = read("Conan, what is best in life? ")
     else:
-      print("How boring!")
-      print("Experience a journey devoid of mirth, oh", adject.ive(), "one.")
+      write("How boring!")
+      write(f"Experience a journey devoid of mirth, oh {adject.ive()} one.")
       self.name = adject.ive().capitalize()
       self.vocation = adject.ive()
       self.color = adject.ive()
@@ -28,13 +29,13 @@ class Player:
     self.fairies = set()
 
   def print_stats(self):
-    print("Your name is", self.name)
-    print("Your vocation is", self.vocation)
-    print("Your favorite color is", self.color)
-    print("You believe the airspeed of an unladen swallow to be", self.velocity)
-    print("You think that love is", self.love)
-    print("You insist that you know what a footsie pop is, and that its center can be reached in a number of licks equal to", self.licks)
-    print("You loudly exclaim that", self.conan, "is best in life")
+    write(f"Your name is {self.name}")
+    write(f"Your vocation is {self.vocation}")
+    write(f"Your favorite color is {self.color}")
+    write(f"You believe the airspeed of an unladen swallow to be {self.velocity}")
+    write(f"You think that love is {self.love}")
+    write(f"You insist that you know what a footsie pop is, and that its center can be reached in a number of licks equal to {self.licks}")
+    write(f"You loudly exclaim that {self.conan} is best in life")
     
   def teleport(self, vector):
     self.coords = vector
