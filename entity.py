@@ -55,15 +55,15 @@ class Entity:
     else:
       return "due west of you"
 
-  # create a deep copy of one of the entities in entity_types.py
-  # and place it at the given coordinates
-  # 
+  # create a deep copy of one of the entities in entity_types.py,
+  # give it a name, and place it at the given coordinates
   def spawn(self: T, coords: tuple([float, float])) -> T:
     clone = copy.deepcopy(self)
     clone.name = adject.ive()
     clone.coords = coords
     return clone
 
+  # TODO: make this actually kill stuff, however we want to handle that
   def destroy(self) -> None:
     self.name = 'dead'
 

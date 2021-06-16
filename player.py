@@ -1,23 +1,23 @@
 import adject
-from graphics import read, write
+from graphics import window as w
 
 pc = None
 
 class Player:
   def __init__(self, unmirthless):
     if unmirthless:
-      self.name = read("What is your name? ")
-      self.vocation = read("What is your vocation? ")
-      self.color = read("What is your favorite color? ")
-      self.velocity = read("How much airspeed velocity could an unladen swallow swallow if an unladen swallow could swallow speed? ")
-      self.love = read("What is love? ")
-      self.licks = read("How many licks to the center of a footsie pop? ")
-      self.conan = read("Conan, what is best in life? ")
+      self.name = w.input("What is your name?")
+      self.epithet = w.input("What is your epithet?")
+      self.color = w.input("What is your favorite color?")
+      self.velocity = w.input("How much airspeed velocity could an unladen swallow swallow if an unladen swallow could swallow speed?")
+      self.love = w.input("What is love?")
+      self.licks = w.input("How many licks to the center of a footsie pop?")
+      self.conan = w.input("Conan, what is best in life?")
     else:
-      write("How boring!")
-      write(f"Experience a journey devoid of mirth, oh {adject.ive()} one.")
+      w.print("How boring!")
+      w.print(f"Experience a journey devoid of mirth, oh {adject.ive()} one.")
       self.name = adject.ive().capitalize()
-      self.vocation = adject.ive()
+      self.epithet = adject.ive().capitalize()
       self.color = adject.ive()
       self.velocity = adject.ive()
       self.love = adject.ive()
@@ -29,13 +29,13 @@ class Player:
     self.fairies = set()
 
   def print_stats(self):
-    write(f"Your name is {self.name}")
-    write(f"Your vocation is {self.vocation}")
-    write(f"Your favorite color is {self.color}")
-    write(f"You believe the airspeed of an unladen swallow to be {self.velocity}")
-    write(f"You think that love is {self.love}")
-    write(f"You insist that you know what a footsie pop is, and that its center can be reached in a number of licks equal to {self.licks}")
-    write(f"You loudly exclaim that {self.conan} is best in life")
+    w.print(f"Your name is {self.name}.")
+    w.print(f"Your epithet is {self.epithet}.")
+    w.print(f"Your favorite color is {self.color}.")
+    w.print(f"You believe the airspeed of an unladen swallow to be {self.velocity}.")
+    w.print(f"You think that love is {self.love}.")
+    w.print(f"You insist that you know what a footsie pop is, and that its center can be reached in a number of licks equal to {self.licks}.")
+    w.print(f"You loudly exclaim that {self.conan} is best in life.")
     
   def teleport(self, vector):
     self.coords = vector
@@ -45,5 +45,5 @@ class Player:
     new_y = self.coords[1] + vector[1]
     self.coords = (new_x, new_y)
   #zach snuck this untested function in here, and in entity
-  def get_offset(origin, dest):
-    return tuple(item1 + item2 for item1, item2 in zip(origin, dest))
+  def get_offset(self, origin, dest):
+    return (dest[0]-origin[0], dest[1]-origin[1])

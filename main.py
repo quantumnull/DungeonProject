@@ -1,31 +1,38 @@
 try:
   if __name__ == "__main__":
+    import graphics
     import act
     import player
     import world
-    import graphics
-    from graphics import read, write
-    import curses  # yes that's seriously what it's called
 
-    graphics.init()
-    write("Oh great, another one.")
-    has_personality = read("Dost this hero have any personality at all? ")
-    player.pc = player.Player("y" == has_personality)
+    with graphics.window as w:
+      w.draw_box()
+      w.print("Oh great, another one.")
+      has_personality = w.input("Dost this hero have any personality at all? ")
+      player.pc = player.Player("y" == has_personality)
+      w.draw_box(f"{player.pc.name} the {player.pc.epithet}")
+      '''
+      while True:
+        w.print(f"You are at {player.pc.coords}.")
+        world.print_visible(player.pc.coords)
+        w.draw_outbox()
+        words = w.input().split()
+        if len(words) == 0:
+          w.print("Try 'go', dummy.")
+          continue
+        action = words[0].lower()
+        if action in act.ions:
+          act.ions[action](words[1:])
+        else:
+          w.print("Try 'go', dummy.")
+      '''
 
-    while True:
-      write(f"You are at {player.pc.coords}")
-      world.print_visible(player.pc.coords)
-      write(f"You have found {len(player.pc.fairies)} fairies")
-      words = read("What do? ").split()
-      if len(words) == 0:
-        continue
-      action = words[0].lower()
-      if action in act.ions:
-        act.ions[action](words[1:])
-      else:
-        write("Try 'go', dummy")
+      while True:
+        world.world.process()
+
+
+
 
 except:
-  curses.endwin()  # or else the terminal is messed up when we crash
   print("You have done a sin.")
   raise

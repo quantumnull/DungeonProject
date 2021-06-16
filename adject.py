@@ -296,7 +296,7 @@ ives = [
   "best",
   "betrayed",
   "better",
-  "better off",
+  "better-off",
   "better-late-than-never",
   "bewildered",
   "bewildering",

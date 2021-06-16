@@ -1,11 +1,14 @@
 import player
 import world
-from graphics import read, write
+from graphics import window as w
 from entity import Individual
+import curses
+import math
+import random
 
 def go(words):
   if len(words) == 0:
-    words = read("Go where? ").split()
+    words = w.input("Go where? ").split()
   
   if len(words) == 1:
     vector = direction_vector(words[0])
@@ -14,20 +17,26 @@ def go(words):
       return
   elif len(words) == 3 and words[0] == "to":
     if words[2] in world.pops and words[1] in world.pops[words[2]]:
-      vector=player.get_offset(player.pc.coords,world.pops[words[2]][words[1]].coords)
+      vector=player.pc.get_offset(player.pc.coords,world.pops[words[2]][words[1]].coords)
       player.pc.walk(vector)
+      return
 #      player.pc.teleport(world.pops[words[2]][words[1]].coords)
-
+  elif len(words) ==3 and words[0].isdigit() and words[1][:4]=="step":
+    vector = direction_vector(words[2],int(words[0]))
+    if vector != None:
+      w.print("You take 3 steps " + words[2])
+      player.pc.walk(vector)
       return
 
-  write(f"You cannot go {' '.join(words)}")
+
+  w.print(f"You cannot go {' '.join(words)}")
 
 def evil(words):
   try:
-    write(str(eval(" ".join(words))))
+    w.print(str(eval(" ".join(words))))
   except BaseException as e:
-    write("You have done a sin.")
-    write(str(e))
+    w.print("You have done a sin.")
+    w.print(str(e))
 
 ions = {
   "go": go,
@@ -46,7 +55,7 @@ ions = {
 def direction_vector(dir, steps: int = 10) -> None:
   dir = dir.lower()
 
-  steps = steps
+  steps = steps + steps * random.uniform(-0.015,0.015)
 
   if dir == "north":
     return (0.0, steps)
@@ -57,15 +66,15 @@ def direction_vector(dir, steps: int = 10) -> None:
   if dir == "west":
     return (-steps, 0.0)
   if dir == "northeast":
-    return (steps, steps)
+    return (steps / math.sqrt(2), steps / math.sqrt(2))
   if dir == "northwest":
-    return (-steps, steps)
+    return (-steps / math.sqrt(2), steps / math.sqrt(2))
   if dir == "southeast":
-    return (steps, -steps)
+    return (steps / math.sqrt(2), -steps / math.sqrt(2))
   if dir == "southwest":
-    return (-steps, -steps)
+    return (-steps / math.sqrt(2), -steps / math.sqrt(2))
   if dir == "est" or dir == "northk":
-    write("The floor is made of meat.")
+    w.print("The floor is made of meat.")
     return (0, 0)
   
   return None
