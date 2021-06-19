@@ -4,21 +4,12 @@ from collections import deque
 from math import ceil
 
 class Window():
-  def __init__(self, height, width):
-    # the initial window that takes up the whole screen
-    self.screen = curses.initscr()
-    # this makes colors available. it also fucks up all the colors,
-    # so we have to fix them after.
-    # what a fucking piece of shit
-    curses.start_color()
+  def init(self, screen, height=24, width=60):
+    self.screen = screen
+    # initing curses fucks up all the colors, so we have to fix them
     curses.init_color(curses.COLOR_BLACK, 0, 0, 0)
     # values out of 1000? what the fuck?
     curses.init_color(curses.COLOR_WHITE, 1000, 1000, 1000)
-    # for whatever godforsaken reason printing text doesn't print in the expected
-    # white foreground/black background, and the uppercase letters print as
-    # different colors from the lowercase letters (what the FUCK?), so we have
-    # to define a color pair just for text to get sane behavior
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
     # most of the time the "real" underlying terminal dimensions are
     # determined by whatever the repl.it server chooses to render the window at,
@@ -45,6 +36,7 @@ class Window():
     self.width = width
     
     # height is dumb, curses is dumb, see prior comment
+    # these are some A+ comments ben, good work -z
     self.box = self.screen.subwin(height+1, width, 0, 0)
 
     # subwindows that we can independently clear and write to,
@@ -55,11 +47,14 @@ class Window():
     self.inbox_w = width - 4
     self.outbox = self.box.subwin(self.outbox_h, self.outbox_w, 1, 0)
     self.inbox = self.box.subwin(self.inbox_h, self.inbox_w, height - 2, 2)
+    self.inbox.keypad(True)  # interpret special keys as numeric values
+    curses.nonl()  # don't translate enter to linefeed
 
     self.outbox_history = deque(maxlen=self.outbox_h*10)
+    self.inbox_history = deque(maxlen=10)
   
   def draw_box(self, title=""):
-    self.box.clear()
+    self.box.erase()
 
     self.box.addstr(0, 0, "┏" + "━"*(self.width-2) + "┓")
     self.box.addstr(self.height-3, 0, "┣" + "━"*(self.width-2) + "┫")
@@ -86,7 +81,7 @@ class Window():
       self.outbox_history.append(f"{gutter}{line}")
   
   def draw_outbox(self):
-    self.outbox.clear()
+    self.outbox.erase()
 
     # only the most recent messages get printed in white.
     # a message is recent if it's been printed since the last command input.
@@ -111,22 +106,79 @@ class Window():
       self.print(prompt)
       self.draw_outbox()
 
-    command = self.inbox.getstr().decode('ascii')
+    chars = []
+    overflowing = False
+    history_index = -1
+
+    # manual key-by-key input handling
+    while True:
+      key = self.inbox.getch()
+      # printable ascii range
+      if 32 <= key <= 126:
+        chars.append(chr(key))
+        if len(chars) < self.inbox_w:
+          self.inbox.echochar(key)
+        else:
+          overflowing = True
+          partial = ''.join(chars[-(self.inbox_w - 2):])
+          self.inbox.addstr(0, 0, f"…{partial}")
+      elif key == curses.KEY_BACKSPACE:
+        if len(chars) != 0:
+          # erase last char
+          chars.pop()
+          if len(chars) < self.inbox_w:
+            if overflowing == False:
+              self.inbox.addstr("\b \b")
+            else:
+              overflowing = False
+              self.inbox.erase()
+              self.inbox.addstr(0, 0, ''.join(chars))
+          else: 
+            partial = ''.join(chars[-(self.inbox_w - 2):])
+            self.inbox.addstr(0, 0, f"…{partial}")
+      elif key == curses.KEY_UP:
+        if history_index < len(self.inbox_history)-1:
+          history_index += 1
+          chars = self.inbox_history[history_index].copy()
+          if len(chars) < self.inbox_w:
+            overflowing = False
+            self.inbox.erase()
+            self.inbox.addstr(0, 0, "".join(chars))
+          else:
+            overflowing = True
+            partial = ''.join(chars[-(self.inbox_w - 2):])
+            self.inbox.addstr(0, 0, f"…{partial}")
+      elif key == curses.KEY_DOWN:
+        if history_index > 0:
+          history_index -= 1
+          chars = self.inbox_history[history_index].copy()
+          if len(chars) < self.inbox_w:
+            overflowing = False
+            self.inbox.erase()
+            self.inbox.addstr(0, 0, "".join(chars))
+          else:
+            overflowing = True
+            partial = ''.join(chars[-(self.inbox_w - 2):])
+            self.inbox.addstr(0, 0, f"…{partial}")
+      elif key == 13:  # enter
+        break
+      else:
+        self.inbox.addstr(str(key))
+    
+    command = ''.join(chars)
 
     if command != "":
-      self.inbox.clear()
-      self.inbox.refresh()
+      self.inbox.erase()
       self.print(command, "❱ ")
+
+      # don't remember identical consecutive actions
+      if len(self.inbox_history) == 0:
+          self.inbox_history.appendleft(chars)
+      else:
+        if chars != self.inbox_history[0]: 
+          self.inbox_history.appendleft(chars)
 
     self.inbox.move(0, 0)  # make sure cursor is where it belongs
     return command
 
-  # allows us to use context managers (the `with` keyword) on instances
-  def __enter__(self):
-    return self
-  
-  # context manager cleanup, ensures that the terminal isn't fucked
-  def __exit__(self, exc_type, exc_value, traceback):
-    curses.endwin()
-
-window = Window(height=24, width=60)
+window = Window()

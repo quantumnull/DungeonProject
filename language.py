@@ -1,3 +1,4 @@
+# RIP R. Tickle
 def article(word):
   vowels = ['a','e','i','o','u']
   for vowel in vowels:

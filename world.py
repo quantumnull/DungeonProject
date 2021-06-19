@@ -4,13 +4,17 @@ import language
 import entity_types
 from graphics import window as w
 import processors
+import pops2
 
 #starting to add framework to be able to use esper ECS
 import esper
 
 world=esper.World()
-update_processor = processors.UpdateProcessor()
-world.add_processor(update_processor)
+interface_processor = processors.InterfaceProcessor()
+pathfinding_processor = processors.PathfindingProcessor()
+world.add_processor(interface_processor)
+world.add_processor(pathfinding_processor)
+world.add_processor(processors.EnpopulateHandler())
 
 
 # run through population __init__ method and generate entities
@@ -21,6 +25,8 @@ pops = {
   "fire": Population(entity_types.fire, 10, 1000),
   "elephant": Population(entity_types.elephant, 100, 1000),
 }
+
+
 
 def print_visible(from_coords):
   visible = []
@@ -37,4 +43,43 @@ def print_visible(from_coords):
       w.print(f"{ind.farstring} {ind.get_direction(from_coords)}.")
 
 #class World():
-  
+
+
+class Coords:
+  def __init__(self, coords=(0.0, 0.0)):
+    self.coords=coords
+
+class Size:
+  def __init__(self, size):
+    self.size=size
+
+class FarString:
+  def __init__(self,string):
+    self.farstring=string
+
+class Noun:
+  def __init__(self,string):
+    self.noun=string
+
+class EnPopulator:
+  def __init__(self):
+    pass
+
+class Kind:
+  def __init__(self, kind):
+    self.kind = kind
+
+class Num:
+  def __init__(self, num):
+    self.num = num
+
+class Spread:
+  def __init__(self, spread):
+    self.spread = spread
+
+world.create_entity(EnPopulator(), Kind(pops2.Goblin()), Num(10000), Spread(400))
+
+jeremy = world.create_entity(Coords((8.0,8.0)),FarString("Jeremy is far away"), Noun("Jeremy"))
+#world.add_component(jeremy, Coord(coords=(1.1, 1.1)))
+#world.add_component(jeremy, FarString(string="Jeremy is far away"))
+#world.add_component(jeremy, Noun("Jeremy"))

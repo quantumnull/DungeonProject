@@ -91,7 +91,8 @@ class Individual(Entity):
     self.coords = tuple(item1 + item2 for item1, item2 in zip(self.coords, dest))
   
   #zach snuck this untested function in here, and into player
+  #the version in player actually works, this one is broken
   def get_offset(origin, dest):
-    return tuple(item1 + item2 for item1, item2 in zip(origin, dest))
+    return (dest[0]-origin[0], dest[1]-origin[1])
 
 #class Item(Entity):
